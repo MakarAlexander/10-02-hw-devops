@@ -1,12 +1,10 @@
-resource "local_file" "hosts_cfg" {
-  content = templatefile("${path.module}/hosts.tftpl",
-  {
-    vm_public_ips: { 
-      node-exporter: module.node_exporter_vm.vm_ips[0].public_ip
-      grafana: module.grafana_vm.vm_ips[0].public_ip,
-      prometheus: module.prometheus_vm.vm_ips[0].public_ip
+resource "local_file" "inventory" {
+  content = templatefile(
+    "${path.module}/inventory.tftpl", {
+      node-exporter = { for i, v in module.node-exporter.external_ip_address : module.node-exporter.fqdn[i] => v }
+      prometheus    = { for i, v in module.prometheus.external_ip_address : module.prometheus.fqdn[i] => v }
+      grafana       = { for i, v in module.grafana.external_ip_address : module.grafana.fqdn[i] => v }
     }
-  })
-
-  filename = "${abspath(path.module)}/../ansible/hosts.yml"
+  )
+  filename = "../ansible/hosts.yml"
 }

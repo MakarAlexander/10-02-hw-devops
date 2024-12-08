@@ -1,0 +1,23 @@
+---
+all:
+  children:
+    node-exporter:
+      hosts:
+%{ for i, v in node-exporter ~}
+        ${i}:
+          ansible_host: ${v}
+%{ endfor ~}
+
+    prometheus:
+      hosts:
+%{ for i, v in prometheus ~}
+        ${i}:
+          ansible_host: ${v}
+%{ endfor ~}
+
+    grafana:
+      hosts:
+%{ for i, v in grafana ~}
+        ${i}:
+          ansible_host: ${v}
+%{ endfor ~}

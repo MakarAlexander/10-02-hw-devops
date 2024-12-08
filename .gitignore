@@ -1,5 +1,6 @@
 # Terraform
 personal*
 .terraform*
+terraform.tfstate*
 # Ansible
-ansible
+secret.yml
